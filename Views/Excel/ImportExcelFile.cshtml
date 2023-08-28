@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "ImportExcelFile";
+}
+
+<h1>ImportExcelFile</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <form method="post" asp-action="ImportExcelFile" asp-controller="Excel" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Upload File :</label>
+                    <input type="file" name="FormFile" class="form-control" accept=".csv,.xls,.xlsx" id="fileinput" onchange="fileValidation()" />
+                </div>
+                <input type="submit" class="btn btn-info btn-sm float-end"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function fileValidation() {
+            var fileInput =
+                document.getElementById('fileinput');
+
+            var filePath = fileInput.value;
+
+            var allowedExtensions =
+                /(\.xls|\.xlsx|\.csv)$/i;
+
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Invalid file type');
+                fileInput.value = '';
+                return false;
+            }
+        }
+    </script>
+}

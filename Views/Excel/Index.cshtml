@@ -1,0 +1,124 @@
+﻿@model IEnumerable<ExcelFileImportExport.Models.ExcelCustomer>
+
+@{
+    ViewData["Title"] = "Index";
+    string message = TempData["Message"] as string;
+}
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-success mt-4 alert-dismissible fade show" role="alert">
+        @message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            @*<p>
+                <a asp-action="Create">Create New</a>
+            </p>*@
+        </div>
+        <div class="col-6">
+            <a class="btn btn-primary btn-sm float-end " asp-action="ImportExcelFile" asp-controller="Excel">Upload File</a> 
+            <a class="btn btn-success btn-sm float-end mx-2" asp-action="ExportExcelFile" asp-controller="Excel">Download Excel File</a>
+            <a class="btn btn-info btn-sm float-end " asp-action="CSV" asp-controller="Excel">Download CSV File</a>
+
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+@*            <th></th>
+*@        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            @*<td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>
+
+
+@{
+    double totalPages = ViewBag.TotalPages;
+    int currentPage = ViewBag.PageNumber;
+}
+
+<nav class="nav navbar-collapse justify-content-center">
+    <ul class="pagination">
+        <li class="page-item @((currentPage == 1) ? "disabled" : "")">
+            @if (currentPage > 1)
+            {
+                <a class="page-link" href="@Url.Action("Index", new { PageNumber = currentPage - 1 })">Previous</a>
+            }
+            else
+            {
+                <span class="page-link">Previous</span>
+            }
+        </li>
+
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { PageNumber = i })">@i</a>
+            </li>
+        }
+
+        <li class="page-item @((currentPage == totalPages) ? "disabled" : "")">
+            @if (currentPage < totalPages)
+            {
+                <a class="page-link" href="@Url.Action("Index", new { PageNumber = currentPage + 1 })">Next</a>
+            }
+            else
+            {
+                <span class="page-link">Next</span>
+            }
+        </li>
+    </ul>
+</nav>
